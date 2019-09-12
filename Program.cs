@@ -46,9 +46,9 @@ namespace BusinessWarehouseApp
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                p.service.WriteToEventLog($"Business Warehouse Batch Error: {ex.Message}");
                 throw;
             }
         }
