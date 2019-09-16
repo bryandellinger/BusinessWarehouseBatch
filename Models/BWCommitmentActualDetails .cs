@@ -134,7 +134,7 @@ namespace BusinessWarehouseApp.Models
         public string ContractNumber { get; set; }
         public string BudgetPeriod { get; set; }
         public string DocumentNumberOfEarmarkedFunds { get; set; }
-        public string LineItem{ get; set; }
+        public string Comment{ get; set; }
         public string Amount { get; set; }
         public string ObjectNumber { get; set; }
         public string ValueType { get; set; }
