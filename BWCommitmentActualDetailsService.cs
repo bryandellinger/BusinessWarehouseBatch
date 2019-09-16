@@ -66,7 +66,7 @@ namespace BusinessWarehouseApp
             bwCommitmentActualDetails.ContractType = zfitem.VERTT;
             bwCommitmentActualDetails.AppropFiscalYr = zfitem.BUDGET_PD;
             bwCommitmentActualDetails.DocumentNumberOfEarmarkedFunds = zfitem.KBLNR;
-            bwCommitmentActualDetails.LineItem = zfitem.RFPOS;
+            bwCommitmentActualDetails.Comment = zfitem.RFPOS;
             bwCommitmentActualDetails.Amount = zfitem.FKBTR;
             bwCommitmentActualDetails.ObjectNumber = zfitem.OBJNRZ;
             bwCommitmentActualDetails.ValueType = zfitem.WRTTP;
@@ -177,7 +177,7 @@ namespace BusinessWarehouseApp
             dt.Columns.Add("AmountInLocalCurrency"); //DMBTR
             dt.Columns.Add("ValueDate"); //VALUT
             dt.Columns.Add("AssignmentNumber"); //ZUONR
-            dt.Columns.Add("ItemText"); //SGTXT
+            dt.Columns.Add("Comment"); //SGTXT
             dt.Columns.Add("AccountNumberOfVendorOrCreditor"); //LIFNR
             dt.Columns.Add("PaymentBlockKey"); //ZLSPR
             dt.Columns.Add("PurchasingDocumentNumber"); //EBELN
@@ -243,7 +243,7 @@ namespace BusinessWarehouseApp
                             bwCommitmentActualDetail.AmountInLocalCurrency,
                             bwCommitmentActualDetail.ValueDate,
                             bwCommitmentActualDetail.AssignmentNumber,
-                            bwCommitmentActualDetail.ItemText,
+                            bwCommitmentActualDetail.Comment,
                             bwCommitmentActualDetail.AccountNumberOfVendorOrCreditor,
                             bwCommitmentActualDetail.PaymentBlockKey,
                             bwCommitmentActualDetail.PurchasingDocumentNumber,
@@ -251,7 +251,7 @@ namespace BusinessWarehouseApp
                             bwCommitmentActualDetail.ContractType,
                             bwCommitmentActualDetail.ContractNumber,
                             bwCommitmentActualDetail.DocumentNumberOfEarmarkedFunds,
-                            bwCommitmentActualDetail.LineItem,
+                            bwCommitmentActualDetail.Comment,
                             bwCommitmentActualDetail.Amount,
                             bwCommitmentActualDetail.ObjectNumber,
                              bwCommitmentActualDetail.ValueType
