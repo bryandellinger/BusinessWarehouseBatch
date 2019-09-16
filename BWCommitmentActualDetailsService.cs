@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using BusinessWarehouseApp.Models;
 using System.Configuration;
@@ -30,15 +30,15 @@ namespace BusinessWarehouseApp
             bwCommitmentActualDetails.DateOfUpdate =  getDate(zfhead.BUDAT);
             bwCommitmentActualDetails.DocumentItem = zfitem.KBLPOS;
             bwCommitmentActualDetails.DocumentType = zfhead.BLART;
-            bwCommitmentActualDetails.FIDocumentNumber = zfitem.REFBN;
             bwCommitmentActualDetails.Fund = zfitem.GEBER;
             bwCommitmentActualDetails.FundsCenter = zfitem.FISTL;
-            bwCommitmentActualDetails.GLAccount = zfitem.HKONT;
+            bwCommitmentActualDetails.GLAccount = zfitem.HKONT == null || zfitem.HKONT.Length <= 10 ? zfitem.HKONT : zfitem.HKONT.Remove(0, 3); 
             bwCommitmentActualDetails.Order = zfitem.AUFNR;
             bwCommitmentActualDetails.RefDocumentNumber = zfitem.XBLNR;
             bwCommitmentActualDetails.WBSElement = zfitem.PROJK;
+            bwCommitmentActualDetails.FIDocPstngLines = zfitem.BUZEI;
+            bwCommitmentActualDetails.FIDocumentNumber = zfitem.REFBN;
             //added attributes
-            bwCommitmentActualDetails.AccountingDocumentNumber = zfhead.BELNR;
             bwCommitmentActualDetails.DocumentDateInDocument = getDate(zfhead.BLDAT);
             bwCommitmentActualDetails.DayOnWhichAcctDocEntered  = getDate(zfhead.CPUDT);
             bwCommitmentActualDetails.TimeOfEntry = zfhead.CPUTM;
@@ -50,13 +50,12 @@ namespace BusinessWarehouseApp
             bwCommitmentActualDetails.DocumentHeaderText = zfhead.BKTXT;
             bwCommitmentActualDetails.ReferenceTransaction = zfhead.AWTYP;
             bwCommitmentActualDetails.ReferenceKey = zfhead.AWKEY;
-            bwCommitmentActualDetails.NumberOfLineItemInAcctDoc = ConvertStringToInt(zfitem.BUZEI);
             bwCommitmentActualDetails.ClearingDate = getDate(zfitem.AUGDT);
             bwCommitmentActualDetails.ClearingEntryDate = getDate(zfitem.AUGCP);
             bwCommitmentActualDetails.DocumentNumberOfTheClearingDocument = zfitem.AUGBL;
             bwCommitmentActualDetails.PostingKey = zfitem.BSCHL;
             bwCommitmentActualDetails.DebitCreditIndicator = zfitem.SHKZG;
-            bwCommitmentActualDetails.AmountInLocalCurrency = zfitem.DMBTR;
+            bwCommitmentActualDetails.AmountInLocalCurrency = !string.IsNullOrEmpty(zfitem.SHKZG) && zfitem.SHKZG == "H" && !string.IsNullOrEmpty(zfitem.DMBTR) ? $"-{zfitem.DMBTR}" : zfitem.DMBTR;
             bwCommitmentActualDetails.ValueDate = getDate(zfitem.VALUT);
             bwCommitmentActualDetails.AssignmentNumber = zfitem.ZUONR;
             bwCommitmentActualDetails.ItemText = zfitem.SGTXT;
@@ -65,7 +64,7 @@ namespace BusinessWarehouseApp
             bwCommitmentActualDetails.PurchasingDocumentNumber = zfitem.EBELN;
             bwCommitmentActualDetails.ItemNumberOfPurchasingDocument = zfitem.EBELP;
             bwCommitmentActualDetails.ContractType = zfitem.VERTT;
-            bwCommitmentActualDetails.BudgetPeriod = zfitem.BUDGET_PD;
+            bwCommitmentActualDetails.AppropFiscalYr = zfitem.BUDGET_PD;
             bwCommitmentActualDetails.DocumentNumberOfEarmarkedFunds = zfitem.KBLNR;
             bwCommitmentActualDetails.LineItem = zfitem.RFPOS;
             bwCommitmentActualDetails.Amount = zfitem.FKBTR;
@@ -111,46 +110,46 @@ namespace BusinessWarehouseApp
             dt.Columns.Add("BWCommitmentActualDetailId");
             dt.Columns.Add("FiscalYear"); //GJAHR
             dt.Columns.Add("Period"); //MONAT
-            dt.Columns.Add("ICSOrg"); //not provided in file
+           // dt.Columns.Add("ICSOrg"); //not provided in file
             dt.Columns.Add("AmountType"); //BTART
-            dt.Columns.Add("AmountTypeDescription");  //not provided in file
-            dt.Columns.Add("AppropFiscalYr");  //not provided in file
-            dt.Columns.Add("AppropLedgerCd");  //not provided in file
-            dt.Columns.Add("Appropriation");  //not provided in file
+           // dt.Columns.Add("AmountTypeDescription");  //not provided in file
+            dt.Columns.Add("AppropFiscalYr");  //BUDGET_PD
+           // dt.Columns.Add("AppropLedgerCd");  //not provided in file
+           // dt.Columns.Add("Appropriation");  //not provided in file
             dt.Columns.Add("BusinessArea");   //GSBER
-            dt.Columns.Add("BusinessAreaDescription"); //not provided in file
-            dt.Columns.Add("CIAvailCntrlLvl"); //not provided in file
+           // dt.Columns.Add("BusinessAreaDescription"); //not provided in file
+           // dt.Columns.Add("CIAvailCntrlLvl"); //not provided in file
             dt.Columns.Add("CommitmentItem"); //FIPOS
-            dt.Columns.Add("CommtActualDetail"); //not provided in file
+           // dt.Columns.Add("CommtActualDetail"); //not provided in file
             dt.Columns.Add("CostCenter"); //KOSTL
             dt.Columns.Add("CostCenterShortCode"); //first 7 of KOSTL
-            dt.Columns.Add("CostCenterDescription"); //not provided in file
+           // dt.Columns.Add("CostCenterDescription"); //not provided in file
             dt.Columns.Add("DateOfUpdate"); //BUDAT
-            dt.Columns.Add("DepOrSecLvl"); //not provided in file
+           // dt.Columns.Add("DepOrSecLvl"); //not provided in file
             dt.Columns.Add("DocumentItem"); //KBLPOS
             dt.Columns.Add("DocumentType"); //BLART
-            dt.Columns.Add("DocumentTypeDescription"); //not provided in file
-            dt.Columns.Add("FCL2BW"); //not provided in file
-            dt.Columns.Add("FIDocPstngLines"); //not provided in file
+           // dt.Columns.Add("DocumentTypeDescription"); //not provided in file
+          //  dt.Columns.Add("FCL2BW"); //not provided in file
+            dt.Columns.Add("FIDocPstngLines"); //BUZEI
             dt.Columns.Add("FIDocumentNumber"); //REFBN
-            dt.Columns.Add("FMDocumentNumber"); //not provided in file
-            dt.Columns.Add("FundCenterLevel3"); // not provided in file
-            dt.Columns.Add("FundCenterLevel4"); // not provided in file
-            dt.Columns.Add("FundSourceForFund"); // not provided in file
-            dt.Columns.Add("FundType"); // not provided in file
+           // dt.Columns.Add("FMDocumentNumber"); //not provided in file
+           // dt.Columns.Add("FundCenterLevel3"); // not provided in file
+           // dt.Columns.Add("FundCenterLevel4"); // not provided in file
+           // dt.Columns.Add("FundSourceForFund"); // not provided in file
+           // dt.Columns.Add("FundType"); // not provided in file
             dt.Columns.Add("Fund"); //GEBER
             dt.Columns.Add("FundsCenter"); //FISTL,
             dt.Columns.Add("GLAccount"); //HKONT
-            dt.Columns.Add("Ledger"); // not provided in file
-            dt.Columns.Add("OrderAgencyDefin"); // not provided in file
+           // dt.Columns.Add("Ledger"); // not provided in file
+           // dt.Columns.Add("OrderAgencyDefin"); // not provided in file
             dt.Columns.Add("Order"); //AUFNR
             dt.Columns.Add("PredecessorDocumentNumber"); // not provided in file
             dt.Columns.Add("RefDocumentNumber"); //XBLNR
-            dt.Columns.Add("SalesDocType"); // not provided in file
+            //dt.Columns.Add("SalesDocType"); // not provided in file
             dt.Columns.Add("Vendor"); // not provided in file
             dt.Columns.Add("VendorDescription"); // not provided in file
             dt.Columns.Add("WBSElement"); //PROJK
-            dt.Columns.Add("PurchaseRequisitions"); // not provided in file
+           // dt.Columns.Add("PurchaseRequisitions"); // not provided in file
             dt.Columns.Add("PreCommitments"); // not provided in file
             dt.Columns.Add("Commitments"); // not provided in file
             dt.Columns.Add("ActualExpenditures"); // not provided in file
@@ -158,7 +157,6 @@ namespace BusinessWarehouseApp
             dt.Columns.Add("NonAugmentingRevenue"); // not provided in file
             dt.Columns.Add("CreatedDate");
             //***************ADDED COLUMNS******************************//
-            dt.Columns.Add("AccountingDocumentNumber"); //BELNR
             dt.Columns.Add("DocumentDateInDocument"); //BLDAT
             dt.Columns.Add("DayOnWhichAcctDocEntered"); //CPUDT
             dt.Columns.Add("TimeOfEntry"); //CPUTM
@@ -170,7 +168,7 @@ namespace BusinessWarehouseApp
             dt.Columns.Add("DocumentHeaderText"); //BKTXT
             dt.Columns.Add("ReferenceTransaction"); //AWTYP
             dt.Columns.Add("ReferenceKey"); //AWKEY
-            dt.Columns.Add("NumberOfLineItemInAcctDoc"); //BUZEI
+           // dt.Columns.Add("NumberOfLineItemInAcctDoc"); //BUZEI
             dt.Columns.Add("ClearingDate"); //AUGDT
             dt.Columns.Add("ClearingEntryDate"); //AUGCP
             dt.Columns.Add("DocumentNumberOfTheClearingDocument"); //AUGBL
@@ -186,7 +184,7 @@ namespace BusinessWarehouseApp
             dt.Columns.Add("ItemNumberOfPurchasingDocument"); //EBELP
             dt.Columns.Add("ContractType"); //VERTT
             dt.Columns.Add("ContractNumber"); //VERTN
-            dt.Columns.Add("BudgetPeriod"); //BUDGET_PD
+           // dt.Columns.Add("BudgetPeriod"); //BUDGET_PD
             dt.Columns.Add("DocumentNumberOfEarmarkedFunds"); //KBLNR
             dt.Columns.Add("LineItem"); //RFPOS
             dt.Columns.Add("Amount"); //FKBTR
@@ -200,53 +198,32 @@ namespace BusinessWarehouseApp
                 dt.Rows.Add(1,
                             getIntValue(bwCommitmentActualDetail.FiscalYear),
                             getIntValue(bwCommitmentActualDetail.Period),
-                            bwCommitmentActualDetail.ICSOrg,
                             bwCommitmentActualDetail.AmountType,
-                            bwCommitmentActualDetail.AmountTypeDescription,
                             bwCommitmentActualDetail.AppropFiscalYr,
-                            bwCommitmentActualDetail.AppropLedgerCd,
-                            bwCommitmentActualDetail.Appropriation,
                             bwCommitmentActualDetail.BusinessArea,
-                            bwCommitmentActualDetail.BusinessAreaDescription,
-                            bwCommitmentActualDetail.CIAvailCntrlLvl,
                             bwCommitmentActualDetail.CommitmentItem,
-                            bwCommitmentActualDetail.CommtActualDetail,
                             bwCommitmentActualDetail.CostCenter,
                             bwCommitmentActualDetail.CostCenterShortCode,
-                            bwCommitmentActualDetail.CostCenterDescription,
                             bwCommitmentActualDetail.DateOfUpdate,
-                            bwCommitmentActualDetail.DepOrSecLvl,
                             bwCommitmentActualDetail.DocumentItem,
                             bwCommitmentActualDetail.DocumentType,
-                            bwCommitmentActualDetail.DocumentTypeDescription,
-                            bwCommitmentActualDetail.FCL2BW,
                             bwCommitmentActualDetail.FIDocPstngLines,
                             bwCommitmentActualDetail.FIDocumentNumber,
-                            bwCommitmentActualDetail.FMDocumentNumber,
-                            bwCommitmentActualDetail.FundCenterLevel3,
-                            bwCommitmentActualDetail.FundCenterLevel4,
-                            bwCommitmentActualDetail.FundSourceForFund,
-                            bwCommitmentActualDetail.FundType,
                             bwCommitmentActualDetail.Fund,
                             bwCommitmentActualDetail.FundsCenter,
                             bwCommitmentActualDetail.GLAccount,
-                            bwCommitmentActualDetail.Ledger,
-                            bwCommitmentActualDetail.OrderAgencyDefin,
                             bwCommitmentActualDetail.Order,
                             bwCommitmentActualDetail.PredecessorDocumentNumber,
                             bwCommitmentActualDetail.RefDocumentNumber,
-                            bwCommitmentActualDetail.SalesDocType,
                             bwCommitmentActualDetail.Vendor,
                             bwCommitmentActualDetail.VendorDescription,
                             bwCommitmentActualDetail.WBSElement,
-                            bwCommitmentActualDetail.PurchaseRequisitions,
                             bwCommitmentActualDetail.PreCommitments,
                             bwCommitmentActualDetail.Commitments,
                             bwCommitmentActualDetail.ActualExpenditures,
                             bwCommitmentActualDetail.ActualAugmentations,
                             bwCommitmentActualDetail.NonAugmentingRevenue,
                             DateTime.Now,
-                            bwCommitmentActualDetail.AccountingDocumentNumber,
                             bwCommitmentActualDetail.DocumentDateInDocument,
                             bwCommitmentActualDetail.DayOnWhichAcctDocEntered,
                             bwCommitmentActualDetail.TimeOfEntry,
@@ -258,7 +235,6 @@ namespace BusinessWarehouseApp
                             bwCommitmentActualDetail.DocumentHeaderText,
                             bwCommitmentActualDetail.ReferenceTransaction,
                             bwCommitmentActualDetail.ReferenceKey,
-                            bwCommitmentActualDetail.NumberOfLineItemInAcctDoc,
                             bwCommitmentActualDetail.ClearingDate,
                             bwCommitmentActualDetail.ClearingEntryDate,
                             bwCommitmentActualDetail.DocumentNumberOfTheClearingDocument,
@@ -274,7 +250,6 @@ namespace BusinessWarehouseApp
                             bwCommitmentActualDetail.ItemNumberOfPurchasingDocument,
                             bwCommitmentActualDetail.ContractType,
                             bwCommitmentActualDetail.ContractNumber,
-                            bwCommitmentActualDetail.BudgetPeriod,
                             bwCommitmentActualDetail.DocumentNumberOfEarmarkedFunds,
                             bwCommitmentActualDetail.LineItem,
                             bwCommitmentActualDetail.Amount,
