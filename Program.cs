@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -45,13 +45,16 @@ namespace BusinessWarehouseApp
                         ZFI_FIFMCO_OUTBOUND iesData = p.batchService.getZfiFimcoOutbound(File.ReadAllText(file));
                         foreach (ZFIFMCOKEY zfifmcokey in iesData.ZFIFMCOKEY)
                         {
-                            foreach (ZFIITEM zfitem in zfifmcokey.ZFIHEAD.ZFIITEM)
+                            if (zfifmcokey.ZFIHEAD != null)
                             {
-                                bwCommitmentActualDetails.Add(p.bwCommitmentActualDetailsService.ConvertToOpenCommitment(zfitem, zfifmcokey.ZFIHEAD));
+                                foreach (ZFIITEM zfitem in zfifmcokey?.ZFIHEAD.ZFIITEM)
+                                {
+                                    bwCommitmentActualDetails.Add(p.bwCommitmentActualDetailsService.ConvertToOpenCommitment(zfitem, zfifmcokey.ZFIHEAD));
+                                }
                             }
                         }
                         p.bwCommitmentActualDetailsService.Insert(bwCommitmentActualDetails);
-                        //File.Move(file, Path.Combine(p.processedPath, Path.GetFileName(file)));
+                        File.Move(file, Path.Combine(p.processedPath, Path.GetFileName(file)));
                         p.batchService.WriteToEventLog($"Completed processing  { Path.GetFileName(file)}");
 
                     }
@@ -59,8 +62,15 @@ namespace BusinessWarehouseApp
             }
             catch (Exception ex)
             {
-
-                p.batchService.WriteToEventLog($"Business Warehouse Batch Error: {ex.Message}");
+                if (ex != null && !string.IsNullOrEmpty(ex.Message))
+                {
+                    p.batchService.WriteToEventLog($"Business Warehouse Batch Error: {ex.Message}");
+                }
+                else
+                {
+                    p.batchService.WriteToEventLog($"Business Warehouse Batch Error");
+                }
+              
                 throw;
             }
         }
