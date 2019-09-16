@@ -1,0 +1,6 @@
+C:\mappings\Development-vNext\BusinessWarehouseApp\bin\Debug\BusinessWarehouseApp.exe.config
+C:\mappings\Development-vNext\BusinessWarehouseApp\bin\Debug\BusinessWarehouseApp.exe
+C:\mappings\Development-vNext\BusinessWarehouseApp\bin\Debug\BusinessWarehouseApp.pdb
+C:\mappings\Development-vNext\BusinessWarehouseApp\obj\Debug\BusinessWarehouseApp.exe
+C:\mappings\Development-vNext\BusinessWarehouseApp\obj\Debug\BusinessWarehouseApp.pdb
+C:\mappings\Development-vNext\BusinessWarehouseApp\obj\Debug\BusinessWarehouseApp.csprojResolveAssemblyReference.cache
