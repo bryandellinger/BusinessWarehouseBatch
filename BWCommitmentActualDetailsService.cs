@@ -58,7 +58,7 @@ namespace BusinessWarehouseApp
             bwCommitmentActualDetails.AmountInLocalCurrency = !string.IsNullOrEmpty(zfitem.SHKZG) && zfitem.SHKZG == "H" && !string.IsNullOrEmpty(zfitem.DMBTR) ? $"-{zfitem.DMBTR}" : zfitem.DMBTR;
             bwCommitmentActualDetails.ValueDate = getDate(zfitem.VALUT);
             bwCommitmentActualDetails.AssignmentNumber = zfitem.ZUONR;
-            bwCommitmentActualDetails.ItemText = zfitem.SGTXT;
+            bwCommitmentActualDetails.Comment = zfitem.SGTXT;
             bwCommitmentActualDetails.AccountNumberOfVendorOrCreditor = zfitem.LIFNR;
             bwCommitmentActualDetails.PaymentBlockKey = zfitem.ZLSPR;
             bwCommitmentActualDetails.PurchasingDocumentNumber = zfitem.EBELN;
@@ -66,7 +66,6 @@ namespace BusinessWarehouseApp
             bwCommitmentActualDetails.ContractType = zfitem.VERTT;
             bwCommitmentActualDetails.AppropFiscalYr = zfitem.BUDGET_PD;
             bwCommitmentActualDetails.DocumentNumberOfEarmarkedFunds = zfitem.KBLNR;
-            bwCommitmentActualDetails.Comment = zfitem.RFPOS;
             bwCommitmentActualDetails.Amount = zfitem.FKBTR;
             bwCommitmentActualDetails.ObjectNumber = zfitem.OBJNRZ;
             bwCommitmentActualDetails.ValueType = zfitem.WRTTP;
@@ -186,7 +185,6 @@ namespace BusinessWarehouseApp
             dt.Columns.Add("ContractNumber"); //VERTN
            // dt.Columns.Add("BudgetPeriod"); //BUDGET_PD
             dt.Columns.Add("DocumentNumberOfEarmarkedFunds"); //KBLNR
-            dt.Columns.Add("LineItem"); //RFPOS
             dt.Columns.Add("Amount"); //FKBTR
             dt.Columns.Add("ObjectNumber"); //OBJNRZ
             dt.Columns.Add("ValueType"); //OBJNRZ
@@ -251,7 +249,6 @@ namespace BusinessWarehouseApp
                             bwCommitmentActualDetail.ContractType,
                             bwCommitmentActualDetail.ContractNumber,
                             bwCommitmentActualDetail.DocumentNumberOfEarmarkedFunds,
-                            bwCommitmentActualDetail.Comment,
                             bwCommitmentActualDetail.Amount,
                             bwCommitmentActualDetail.ObjectNumber,
                              bwCommitmentActualDetail.ValueType
